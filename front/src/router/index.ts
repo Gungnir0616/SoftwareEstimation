@@ -4,7 +4,8 @@ import UserRegister from "@/views/UserRegister.vue";
 import Aside from "@/components/Aside.vue";
 import HomePage from "@/views/HomePage.vue";
 import MyHeader from "@/components/MyHeader.vue";
-import CompositeManagement from "@/views/CompositeManagement.vue"
+import CompositeManagement from "@/views/CompositeManagement.vue";
+import FunctionManagement from "@/views/FunctionManagement.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -34,7 +35,16 @@ const routes: Array<RouteRecordRaw> = [
       Aside: Aside,
       myHeader: MyHeader,
     },
-  }
+  },
+  {
+    path: '/function-management', // 功能点管理页面的路径
+    name: 'FunctionManagement',
+    components: {
+      default: FunctionManagement, // 主内容区域显示 FunctionManagement 页面
+      Aside: Aside, // 侧边栏
+      myHeader: MyHeader, // 头部导航栏
+    },
+  },
 
 ]
 
