@@ -448,15 +448,21 @@ const openDialog = (type, project) => {
                       "查看结果"; 
   dialogVisible.value = true;
 
-  if (type === "functions") {
-    fetchFunctionPoints(project.id); 
-    fetchTotalFunctionPoint(project.id, gscTotal.value, selectedScfStage.value); 
-    fetchCalculationResults();
-  } else if (type === "results") {
-    fetchFunctionPoints(project.id);
-    fetchTotalFunctionPoint(project.id, gscTotal.value, selectedScfStage.value);
-    fetchCalculationResults();
-    ElMessage.success("结果已成功加载！");
+  // 重置变量
+  if (type === "results") {
+    selectedAdjustment.value = ""; // 重置调整因子选择
+    selectedScfStage.value = 0;    // 重置 SCF 阶段
+    gscTotal.value = 0;            // 重置 GSC 总值
+    ufp.value = null;              // 清空未调整功能点数
+    scfAfp.value = 0;              // 清空 SCF 调整功能点数
+    gscAfp.value = 0;              // 清空 GSC 调整功能点数
+    vaf.value = 0;                 // 清空 VAF
+
+    fetchFunctionPoints(project.id); // 加载功能点
+    fetchTotalFunctionPoint(project.id, gscTotal.value, selectedScfStage.value); // 加载计算结果
+    fetchCalculationResults(); // 加载计算记录
+  } else if (type === "functions") {
+    fetchFunctionPoints(project.id); // 如果为功能点管理界面，加载功能点数据
   }
 };
 
@@ -781,7 +787,7 @@ const fetchTotalFunctionPoint = async (projectId, totalWeight = 0, scfStage = 4)
     const response = await axios.post(`${API_BASE_URL}/cal-functionpoint`, {
       project_id: projectId,
       total_weight: totalWeight,
-      scf_stage: selectedScfStage.value,
+      scf_stage: Number(selectedScfStage.value) || 0,
     });
 
     const { UFP, SCF_AFP, GSC_AFP, VAF } = response.data;
